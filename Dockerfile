@@ -1,6 +1,6 @@
 FROM alpine:latest as base
 
-RUN apk --update add --no-cache \
+RUN apk add --no-cache \
     python3-dev py3-pip git \
     && apk add --no-cache --virtual .build-deps \
     build-base postgresql-dev  \
