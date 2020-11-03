@@ -24,9 +24,12 @@ RUN /app/venv/bin/python3 -m pip install --no-cache -r requirements.txt \
     && rm -rf /var/tmp/* && \
     rm -rf /var/cache/apk/* && \
     rm -rf requirements.txt
-COPY . /app/venv/bin
+    
+COPY . .
     
 FROM alpine:latest as run
+
+COPY --from=base /app/venv venv
 
 WORKDIR /app
 RUN chmod 777 /app
@@ -39,4 +42,3 @@ RUN apk add --no-cache \
     ffmpeg p7zip && \
     rm -rf /var/cache/apk/*
 
-COPY --from=base /app/venv venv
