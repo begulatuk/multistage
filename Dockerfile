@@ -6,8 +6,8 @@ RUN apk add --no-cache \
     build-base postgresql-dev  \
     libxslt-dev libffi-dev
 
-WORKDIR /usr/src/app
-RUN chmod 777 /usr/src/app
+WORKDIR /app
+RUN chmod 777 /app
 
 RUN pip3 install --ignore-installed distlib pipenv \
     && python3 -m venv /app/venv && \
@@ -20,15 +20,15 @@ ENV PATH="/app/venv/bin:$PATH" VIRTUAL_ENV="/app/venv"
 ADD https://raw.githubusercontent.com/SVR666/LoaderX-Bot/master/requirements.txt requirements.txt
 #RUN CFLAGS="-O0"  
 RUN /app/venv/bin/python3 -m pip install --no-cache -r requirements.txt
-#    apk del .build-deps 
-#    && rm -rf /var/tmp/* && \
-#    rm -r /var/cache/apk/APKINDEX.* && rm -rf /var/cache/apk/* && \
-#    rm -rf requirements.txt
+    && apk del .build-deps 
+    && rm -rf /var/tmp/* && \
+    rm -r /var/cache/apk/APKINDEX.* && rm -rf /var/cache/apk/* && \
+    rm -rf requirements.txt
     
 FROM alpine:latest as run
 
-WORKDIR /usr/src/app
-RUN chmod 777 /usr/src/app
+WORKDIR /app
+RUN chmod 777 /app
 
 ENV PATH="/app/venv/bin:$PATH" VIRTUAL_ENV="/app/venv"
 
