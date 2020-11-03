@@ -2,10 +2,10 @@ FROM alpine:latest as base
 WORKDIR /usr/src/app
 
 RUN apk --update add --no-cache && \
-    apk add python3-dev py3-pip \
+    apk add python3-dev py3-pip git \
     && apk add --no-cache --virtual .build-deps \
     build-base postgresql-dev  \
-    libxslt-dev libffi-dev git py3-pip
+    libxslt-dev libffi-dev
 
 RUN pip3 install --upgrade pip && \
     pip3 install --ignore-installed distlib pipenv \
@@ -16,13 +16,13 @@ ENV PATH="/app/venv/bin:$PATH" VIRTUAL_ENV="/app/venv"
 
 
 
+ADD https://raw.githubusercontent.com/SVR666/LoaderX-Bot/master/requirements.txt requirements.txt
 RUN pip3 install --upgrade pip && \
-    pip3 install --no-cache-dir -r https://raw.githubusercontent.com/SVR666/LoaderX-Bot/master/requirements.txt && \
-    rm -r /var/cache/apk/APKINDEX.* && rm -rf /var/cache/apk/* && \
+    CFLAGS="-O0"  pip3 install -r requirements.txt && \
     apk del .build-deps && rm -rf /var/tmp/* && \
-    rm -rf requirements.txt 
-
-
+    rm -r /var/cache/apk/APKINDEX.* && rm -rf /var/cache/apk/* && \
+    rm -rf requirements.txt && pip3 cache purge
+    
 FROM alpine:latest as run
 
 WORKDIR /usr/src/app
