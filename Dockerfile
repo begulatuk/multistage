@@ -24,6 +24,7 @@ RUN /app/venv/bin/python3 -m pip install --no-cache -r requirements.txt \
     && rm -rf /var/tmp/* && \
     rm -rf /var/cache/apk/* && \
     rm -rf requirements.txt
+COPY . /app/venv/bin
     
 FROM alpine:latest as run
 
