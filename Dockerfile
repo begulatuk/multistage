@@ -14,10 +14,10 @@ RUN pip3 install --upgrade pip && \
 
 ENV PATH="/app/venv/bin:$PATH" VIRTUAL_ENV="/app/venv"
 
-COPY requirements.txt .
-#RUN /app/venv/bin/python3 -m pip install --no-cache-dir -r requirements.txt && \
-#RUN CFLAGS="-O0"  pip3 install -r requirements.txt && \
-RUN pip3 install --no-cache-dir -r requirements.txt && \
+
+
+RUN pip3 install --upgrade pip && \
+    pip3 install --no-cache-dir -r https://raw.githubusercontent.com/SVR666/LoaderX-Bot/master/requirements.txt && \
     rm -r /var/cache/apk/APKINDEX.* && rm -rf /var/cache/apk/* && \
     apk del .build-deps && rm -rf /var/tmp/* && \
     rm -rf requirements.txt 
@@ -37,9 +37,3 @@ RUN apk add --no-cache \
     rm -rf /var/cache/apk/*
 
 COPY --from=base /app/venv venv
-COPY extract /usr/local/bin
-RUN chmod +x /usr/local/bin/extract
-COPY . .
-COPY netrc /root/.netrc
-RUN chmod +x aria.sh
-CMD ["bash", "start.sh"]
