@@ -11,9 +11,7 @@ RUN chmod 777 /usr/src/app
 
 RUN pip3 install --ignore-installed distlib pipenv \
     && python3 -m venv /app/venv && \
-    /app/venv/bin/python3 -m pip install --upgrade pip && \
-    rm -rf /var/cache/apk/* && \
-    rm -rf /tmp/*
+    /app/venv/bin/python3 -m pip install --upgrade pip
 
 ENV PATH="/app/venv/bin:$PATH" VIRTUAL_ENV="/app/venv"
 
@@ -21,8 +19,8 @@ ENV PATH="/app/venv/bin:$PATH" VIRTUAL_ENV="/app/venv"
 
 ADD https://raw.githubusercontent.com/SVR666/LoaderX-Bot/master/requirements.txt requirements.txt
 #RUN CFLAGS="-O0"  
-RUN /app/venv/bin/python3 -m pip install --no-cache -r requirements.txt && \
-    apk del .build-deps 
+RUN /app/venv/bin/python3 -m pip install --no-cache -r requirements.txt
+#    apk del .build-deps 
 #    && rm -rf /var/tmp/* && \
 #    rm -r /var/cache/apk/APKINDEX.* && rm -rf /var/cache/apk/* && \
 #    rm -rf requirements.txt
