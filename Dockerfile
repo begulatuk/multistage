@@ -6,8 +6,8 @@ RUN apk add --no-cache \
     build-base postgresql-dev  \
     libxslt-dev libffi-dev
 
-WORKDIR /app
-RUN chmod 777 /app
+#WORKDIR /app
+#RUN chmod 777 /app
 
 RUN pip3 install --ignore-installed distlib pipenv \
     && python3 -m venv /app/venv && \
@@ -25,20 +25,21 @@ RUN /app/venv/bin/python3 -m pip install --no-cache -r requirements.txt \
     rm -rf /var/cache/apk/* && \
     rm -rf requirements.txt
     
-#COPY . .
+COPY . .
     
-#FROM alpine:latest as run
+FROM alpine:latest as run
 
-#COPY --from=base /app/venv /app/
+COPY --from=base /app/venv /app/venv
 
-#WORKDIR /app
-#RUN chmod 777 /app
+WORKDIR /app
+RUN chmod 777 /app
 
-#ENV PATH="/app/venv/bin:$PATH" VIRTUAL_ENV="/app/venv"
+ENV PATH="/app/venv/bin:$PATH" VIRTUAL_ENV="/app/venv"
 
-#RUN apk add --no-cache \
-#    python3 \
-#    bash curl wget \
-#    ffmpeg p7zip && \
-#    rm -rf /var/cache/apk/*
+RUN apk add --no-cache \
+    python3 \
+    bash curl wget \
+    ffmpeg p7zip && \
+    rm -rf /var/cache/apk/*
 
+CMD ["bash"]
