@@ -21,7 +21,7 @@ RUN pip3 install --upgrade pip && \
     CFLAGS="-O0"  pip3 install -r requirements.txt && \
     apk del .build-deps && rm -rf /var/tmp/* && \
     rm -r /var/cache/apk/APKINDEX.* && rm -rf /var/cache/apk/* && \
-    rm -rf requirements.txt && pip3 cache purge
+    rm -rf requirements.txt
     
 FROM alpine:latest as run
 
