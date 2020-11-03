@@ -29,7 +29,7 @@ COPY . .
     
 FROM alpine:latest as run
 
-COPY --from=base /app/venv venv
+COPY --from=base /app/venv /app/
 
 WORKDIR /app
 RUN chmod 777 /app
