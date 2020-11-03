@@ -31,8 +31,8 @@ FROM alpine:latest as run
 
 COPY --from=base /app/venv /app/venv
 
-WORKDIR /app
-RUN chmod 777 /app
+#WORKDIR /app
+#RUN chmod 777 /app
 
 ENV PATH="/app/venv/bin:$PATH" VIRTUAL_ENV="/app/venv"
 
