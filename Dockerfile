@@ -1,5 +1,4 @@
 FROM alpine:latest as base
-WORKDIR /usr/src/app
 
 RUN apk --update add --no-cache \
     python3-dev py3-pip git \
@@ -7,9 +6,14 @@ RUN apk --update add --no-cache \
     build-base postgresql-dev  \
     libxslt-dev libffi-dev
 
+WORKDIR /usr/src/app
+RUN chmod 777 /usr/src/app
+
 RUN pip3 install --ignore-installed distlib pipenv \
     && python3 -m venv /app/venv && \
-    /app/venv/bin/python3 -m pip install --upgrade pip
+    /app/venv/bin/python3 -m pip install --upgrade pip && \
+    rm -rf /var/cache/apk/* && \
+    rm -rf /tmp/*
 
 ENV PATH="/app/venv/bin:$PATH" VIRTUAL_ENV="/app/venv"
 
