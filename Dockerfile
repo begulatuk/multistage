@@ -22,7 +22,7 @@ ADD https://raw.githubusercontent.com/SVR666/LoaderX-Bot/master/requirements.txt
 RUN /app/venv/bin/python3 -m pip install --no-cache -r requirements.txt \
     && apk del .build-deps \
     && rm -rf /var/tmp/* && \
-    rm -r /var/cache/apk/APKINDEX.* && rm -rf /var/cache/apk/* && \
+    rm -rf /var/cache/apk/* && \
     rm -rf requirements.txt
     
 FROM alpine:latest as run
