@@ -18,7 +18,7 @@ ENV PATH="/app/venv/bin:$PATH" VIRTUAL_ENV="/app/venv"
 
 ADD https://raw.githubusercontent.com/SVR666/LoaderX-Bot/master/requirements.txt requirements.txt \
 #RUN CFLAGS="-O0"  
-RUN /app/venv/bin/python3 -m pip install --no-cache-dir -r requirements.txt
+RUN /app/venv/bin/python3 -m pip install --no-cache-dir -r requirements.txt \
     && apk del .build-deps \
     && rm -rf /var/tmp/* && \
     rm -rf /var/cache/apk/* && \
