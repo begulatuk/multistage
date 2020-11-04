@@ -16,10 +16,9 @@ RUN pip3 install --ignore-installed distlib pipenv \
 ENV PATH="/app/venv/bin:$PATH" VIRTUAL_ENV="/app/venv"
 
 
-
 ADD https://raw.githubusercontent.com/SVR666/LoaderX-Bot/master/requirements.txt requirements.txt
 #RUN CFLAGS="-O0"  
-RUN /app/venv/bin/python3 -m pip install --no-cache-dir -r requirements.txt && pip3 freeze --local > requirements.txt\
+RUN /app/venv/bin/python3 -m pip install --no-cache-dir -r requirements.txt
     && apk del .build-deps \
     && rm -rf /var/tmp/* && \
     rm -rf /var/cache/apk/* && \
@@ -29,11 +28,12 @@ RUN /app/venv/bin/python3 -m pip install --no-cache-dir -r requirements.txt && p
     
 FROM alpine:latest as run
 
-RUN mkdir /venv
-RUN chmod 777 /venv
+RUN mkdir app
+RUN chmod 777 /app
 WORKDIR /app
 
 COPY --from=base /app/venv venv
+COPY --from=base /app app
 
 ENV PATH="/app/venv/bin:$PATH" VIRTUAL_ENV="/app/venv"
 
