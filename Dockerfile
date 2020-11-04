@@ -29,11 +29,11 @@ RUN /app/venv/bin/python3 -m pip install --no-cache-dir -r requirements.txt \
     
 FROM alpine:latest as run
 
-RUN mkdir ./venv
-RUN chmod 777 ./venv
+RUN mkdir /venv
+RUN chmod 777 /venv
 WORKDIR /app
 
-COPY --from=base /app/venv /app/venv
+COPY --from=base /app/venv venv
 
 ENV PATH="/app/venv/bin:$PATH" VIRTUAL_ENV="/app/venv"
 
