@@ -23,16 +23,16 @@ RUN /app/venv/bin/python3 -m pip install --no-cache-dir -r requirements.txt \
     && apk del .build-deps \
     && rm -rf /var/tmp/* && \
     rm -rf /var/cache/apk/* && \
-    rm -rf requirements.txt && \
+    rm -rf requirements.txt
 
     
     
 FROM alpine:latest as run
 
-COPY --from=base /app/venv venv
-
-#WORKDIR /app
-#RUN chmod 777 /app
+RUN mkdir /app/venv
+WORKDIR /app
+RUN chmod 777 /app
+COPY --from=base /app/venv /app/venv
 
 ENV PATH="/app/venv/bin:$PATH" VIRTUAL_ENV="/app/venv"
 
