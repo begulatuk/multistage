@@ -3,7 +3,7 @@ FROM alpine:latest as base
 RUN apk add --no-cache \
     python3-dev py3-pip git \
     && apk add --no-cache --virtual .build-deps \
-    build-base postgresql-dev  \
+    build-base \
     libxslt-dev libffi-dev
 
 #WORKDIR /app
@@ -38,7 +38,7 @@ ENV PATH="/app/venv/bin:$PATH" VIRTUAL_ENV="/app/venv"
 
 RUN apk add --no-cache \
 #    python3 \
-    bash curl wget \
+    bash curl wget postgresql-dev \
     ffmpeg p7zip && \
     rm -rf /var/cache/apk/*
 
