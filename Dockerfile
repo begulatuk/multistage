@@ -6,8 +6,7 @@ RUN apk add --no-cache \
     build-base postgresql-dev \
     libxslt-dev libffi-dev
 
-#WORKDIR /app
-#RUN chmod 777 /app
+RUN mkdir /app/venv && cd app/venv
 
 RUN pip3 install --ignore-installed distlib pipenv \
     && python3 -m venv /app/venv && \
