@@ -38,6 +38,6 @@ RUN apk add --no-cache \
     python3 \
     bash curl wget libmagic \
     ffmpeg p7zip && \
-    rm -rf /var/cache/apk/*
+    rm -rf /var/tmp/* && rm -rf /var/cache/apk/*
 
 CMD ["bash"]
