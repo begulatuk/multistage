@@ -35,7 +35,7 @@ COPY --from=base /app/venv /venv
 ENV PATH="/app/venv/bin:$PATH" VIRTUAL_ENV="/app/venv"
 
 RUN apk add --no-cache \
-#    python3 \
+    python3 \
     bash curl wget \
     ffmpeg p7zip && \
     rm -rf /var/cache/apk/*
