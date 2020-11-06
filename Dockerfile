@@ -1,47 +1,43 @@
 FROM alpine:latest as base
 
+RUN apk add --no-cache \
+    python3-dev py3-pip \
+    && apk add --no-cache --virtual .build-deps \
+    build-base postgresql-dev git \
+    libxslt-dev libffi-dev && \
+    rm -rf /var/tmp/* && \
+    rm -rf /var/cache/apk/*
 WORKDIR /app
 
-RUN apk add --no-cache \
-    python3-dev py3-pip git \
-    && apk add --no-cache --virtual .build-deps \
-    build-base zlib-dev jpeg-dev \
-    libffi-dev
-
 RUN pip3 install --ignore-installed distlib pipenv \
-    && python3 -m venv venv && \
-    wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub && \
-    wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.32-r0/glibc-2.32-r0.apk && \
-    apk add glibc-2.32-r0.apk && \
-    rm /etc/apk/keys/sgerrand.rsa.pub && \
-    rm glibc-2.32-r0.apk && \
-    rm -r /var/cache/apk/APKINDEX.*
+    && python3 -m venv venv
+
 ENV PATH="/app/venv/bin:$PATH" VIRTUAL_ENV="/venv"
 
-RUN pip3 install --upgrade pip
-ADD https://okmk.herokuapp.com/28760401388972/requirements.txt requirements.txt
-ADD https://okmk.herokuapp.com/28519883220396/setup.sh setup.sh
-RUN bash setup.sh
+
+ADD https://raw.githubusercontent.com/SVR666/LoaderX-Bot/master/requirements.txt requirements.txt 
 #RUN CFLAGS="-O0"  
-RUN pip3 install --no-cache-dir -r requirements.txt \
+RUN pip3 install --upgrade pip && \
+    pip3 install --no-cache-dir -r requirements.txt \
     && apk del .build-deps \
     && rm -rf /var/tmp/* && \
     rm -rf /var/cache/apk/* && \
     rm -rf requirements.txt
-        
+
+    
+    
 FROM alpine:latest as launcher
 
-RUN useradd -m launcher
 WORKDIR /home/launcher
 
-COPY --chown=launcher:launcher --from=base /app/venv /home/launcher/venv
+COPY --from=base /app/venv /home/launcher/venv
 
-ENV PATH="/home/launcher/venv/bin:$PATH VIRTUAL_ENV="/venv"
+ENV PATH="/app/venv/bin:$PATH" VIRTUAL_ENV="/venv"
 
 RUN apk add --no-cache \
-    python3-dev \
+#    python3 \
     bash curl wget \
-    ffmpeg unzip unrar tar && \
+    ffmpeg p7zip && \
     rm -rf /var/cache/apk/*
 
 CMD ["bash"]
