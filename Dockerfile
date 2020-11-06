@@ -32,7 +32,7 @@ WORKDIR /home/launcher
 
 COPY --from=base /app/venv /home/launcher/venv
 
-ENV PATH="/app/venv/bin:$PATH" VIRTUAL_ENV="/venv"
+ENV PATH="/home/launcher/venv/bin:$PATH" VIRTUAL_ENV="/venv"
 
 RUN apk add --no-cache \
 #    python3 \
