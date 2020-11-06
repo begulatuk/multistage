@@ -10,9 +10,9 @@ RUN apk add --no-cache \
 WORKDIR /app
 
 RUN pip3 install --ignore-installed distlib pipenv \
-    && python3 -m venv venv
+    && python3 -m venv /app/venv
 
-ENV PATH="/app/venv/bin:$PATH" VIRTUAL_ENV="/venv"
+ENV PATH="/app/venv/bin:$PATH" VIRTUAL_ENV="/app/venv"
 
 
 ADD https://raw.githubusercontent.com/SVR666/LoaderX-Bot/master/requirements.txt requirements.txt 
@@ -28,11 +28,11 @@ RUN pip3 install --upgrade pip && \
     
 FROM alpine:latest as launcher
 
-WORKDIR /home/launcher
+WORKDIR /app
 
-COPY --from=base /app/venv /home/launcher/venv
+COPY --from=base /app/venv /venv
 
-ENV PATH="/home/launcher/venv/bin:$PATH" VIRTUAL_ENV="/venv"
+ENV PATH="/app/venv/bin:$PATH" VIRTUAL_ENV="/app/venv"
 
 RUN apk add --no-cache \
 #    python3 \
