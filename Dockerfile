@@ -36,7 +36,7 @@ ENV PATH="/home/launcher/venv/bin:$PATH" VIRTUAL_ENV="/venv"
 
 RUN apk add --no-cache \
     python3 \
-    bash curl wget \
+    bash curl wget libmagic \
     ffmpeg p7zip && \
     rm -rf /var/cache/apk/*
 
