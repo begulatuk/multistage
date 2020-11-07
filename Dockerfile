@@ -1,13 +1,14 @@
 FROM alpine:latest as base
 
 RUN apk add --no-cache \
-    python3-dev py3-pip \
+    python3-dev \
     && apk add --no-cache --virtual .build-deps \
-    build-base postgresql-dev git \
-    libxslt-dev libffi-dev && \
-    rm -rf /var/tmp/* && \
+    build-base postgresql-dev  \
+    libxslt-dev libffi-dev git py3-pip && \
     rm -rf /var/cache/apk/*
+    
 WORKDIR /app
+RUN chmod 777 /app
 
 RUN pip3 install --ignore-installed distlib pipenv \
     && python3 -m venv /app/venv
@@ -29,14 +30,15 @@ RUN pip3 install --upgrade pip && \
 FROM alpine:latest as launcher
 
 WORKDIR /app
+RUN chmod 777 /app
 
 COPY --from=base /app/venv /app/venv
 
 ENV PATH="/app/venv/bin:$PATH" VIRTUAL_ENV="/app/venv"
 
 RUN apk add --no-cache \
-    python3-dev \
-    bash curl wget \
+    wget postgresql-dev \
+    bash libmagic curl \
     ffmpeg p7zip && \
     rm -rf /var/tmp/* && rm -rf /var/cache/apk/*
 
