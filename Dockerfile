@@ -37,11 +37,12 @@ COPY --from=base /app/venv /app/venv
 ENV PATH="/app/venv/bin:$PATH" VIRTUAL_ENV="/app/venv"
 
 RUN apk add --no-cache \
-    python3 wget postgresql-dev \
+    wget postgresql-dev \
     bash curl \
     ffmpeg p7zip && \
     apk add --no-cache --virtual .build-deps \
-    build-base libxslt-dev libffi-dev && \
-    /app/venv/bin/python3 -m pip install lxml && apk del .build-deps && \
+    build-base libxslt-dev libffi-dev
+RUN /app/venv/bin/python3 -m pip install lxml
+RUN apk del .build-deps && \
     rm -rf /var/tmp/* && rm -rf /var/cache/apk/* 
 CMD ["bash"]
