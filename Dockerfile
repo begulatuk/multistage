@@ -37,7 +37,7 @@ COPY --from=base /app/venv /app/venv
 ENV PATH="/app/venv/bin:$PATH" VIRTUAL_ENV="/app/venv"
 
 RUN apk add --no-cache \
-    python3 py3-pip wget postgresql-dev \
+    python3-dev py3-pip wget postgresql-dev \
     bash curl \
     ffmpeg p7zip py3-lxml && \
     apk add --no-cache --virtual .build-deps \
