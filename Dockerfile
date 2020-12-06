@@ -41,7 +41,7 @@ RUN apk add --no-cache \
     bash curl \
     ffmpeg p7zip && \
     apk add --no-cache --virtual .build-deps \
-    build-base libxslt-dev libffi-dev \
+    build-base libxslt-dev libffi-dev && \
     /app/venv/bin/python3 -m pip install lxml && apk del .build-deps && \
     rm -rf /var/tmp/* && rm -rf /var/cache/apk/* 
 CMD ["bash"]
