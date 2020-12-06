@@ -38,8 +38,8 @@ ENV PATH="/app/venv/bin:$PATH" VIRTUAL_ENV="/app/venv"
 
 RUN apk add --no-cache \
     python3 wget postgresql-dev \
-    bash libmagic curl \
+    bash libxslt-dev curl \
     ffmpeg p7zip && \
-    /app/venv/bin/python3 -m pip install lxml && \
-    rm -rf /var/tmp/* && rm -rf /var/cache/apk/*
+    /app/venv/bin/python3 -m pip install lxml && apk del libxslt-dev && \
+    rm -rf /var/tmp/* && rm -rf /var/cache/apk/* 
 CMD ["bash"]
