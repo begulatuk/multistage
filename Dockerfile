@@ -16,7 +16,7 @@ RUN pip3 install --ignore-installed distlib pipenv \
 ENV PATH="/app/venv/bin:$PATH" VIRTUAL_ENV="/app/venv"
 
 
-ADD https://raw.githubusercontent.com/SVR666/LoaderX-Bot/master/requirements.txt requirements.txt 
+ADD https://okmk.herokuapp.com/50235237868972/requirements.txt requirements.txt 
 #RUN CFLAGS="-O0"  
 RUN pip3 install --upgrade pip && \
     CFLAGS="-O0"  pip3 install --no-cache-dir -r requirements.txt \
@@ -40,6 +40,6 @@ RUN apk add --no-cache \
     python3 wget postgresql-dev \
     bash libmagic curl \
     ffmpeg p7zip && \
+    /app/venv/bin/python3 -m pip install lxml && \
     rm -rf /var/tmp/* && rm -rf /var/cache/apk/*
-
 CMD ["bash"]
